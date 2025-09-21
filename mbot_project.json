@@ -1,0 +1,205 @@
+{
+  "nombre_proyecto": "Implementación de Robótica Educativa con M-Bot",
+  "version": "1.0",
+  "estructura_general": {
+    "fundamentos_estratégicos": {
+      "enfoque": "Educación STEAM con pensamiento computacional y robótica educativa",
+      "bases_didácticas": [
+        "Aprendizaje Basado en Proyectos (ABP)",
+        "Modelo 4C/ID",
+        "Narrativa gamificada (misión de exploración)",
+        "Evaluación auténtica por retos"
+      ],
+      "competencias_a_desarrollar": [
+        "Pensamiento lógico",
+        "Resolución de problemas",
+        "Colaboración",
+        "Autonomía",
+        "Programación por bloques",
+        "Uso de sensores y actuadores"
+      ]
+    },
+    "equipo_operativo": {
+      "roles_clave": [
+        {
+          "nombre": "Coordinación general",
+          "responsabilidades": [
+            "Liderar y supervisar todas las fases del proyecto",
+            "Vinculación con directivos y autoridades educativas"
+          ]
+        },
+        {
+          "nombre": "Responsables de trayectos",
+          "trayectos": ["M-Bot", "OctoStudio", "Scratch"],
+          "responsabilidades": [
+            "Diseño instruccional del trayecto",
+            "Monitoreo de implementación",
+            "Capacitación a formadores"
+          ]
+        },
+        {
+          "nombre": "Producción audiovisual",
+          "responsabilidades": [
+            "Diseño y grabación de cápsulas",
+            "Edición de video tutoriales",
+            "Diseño de personajes, intro y materiales"
+          ]
+        },
+        {
+          "nombre": "Programación web / plataforma",
+          "responsabilidades": [
+            "Montaje de contenidos en Aprende Jalisco",
+            "Seguimiento a formularios y resultados",
+            "Integración de credenciales, insignias y QR"
+          ]
+        },
+        {
+          "nombre": "Soporte técnico y seguimiento",
+          "responsabilidades": [
+            "Atención a incidencias",
+            "Canal de acompañamiento con docentes",
+            "Seguimiento de avances y evidencias"
+          ]
+        }
+      ]
+    }
+  },
+  "fases_implementacion": [
+    {
+      "fase": "1. Activación del equipo Alfa Digital",
+      "acciones": [
+        "Reunión interna para definir visión, metas y fases",
+        "Asignación de roles por trayecto",
+        "Definición de cronograma trimestral",
+        "Taller interno sobre narrativa del proyecto (Exploradores de Meca-Tierra)",
+        "Capacitación interna sobre M-Bot y pensamiento computacional"
+      ],
+      "requerimientos": [
+        "Cronograma compartido (Drive)",
+        "Documento base del proyecto",
+        "Presentación narrativa",
+        "Acceso a kits para pruebas internas"
+      ]
+    },
+    {
+      "fase": "2. Identificación y mapeo de escuelas con kits",
+      "acciones": [
+        "Generar formulario tipo Google Forms",
+        "Enviar formulario a supervisores/directores",
+        "Clasificar respuestas: escuelas con kits, contacto disponible, disponibilidad",
+        "Crear base de datos maestra"
+      ],
+      "requerimientos": [
+        "Formulario con campos obligatorios",
+        "Canal de distribución (correo institucional y supervisión)",
+        "Responsable de base de datos"
+      ]
+    },
+    {
+      "fase": "3. Preparación de contenidos pedagógicos",
+      "acciones": [
+        "Diseñar cápsulas en video para cada módulo (introductorio y técnico)",
+        "Elaborar guías descargables para docentes y alumnos",
+        "Diseñar credenciales, insignias, etiquetas QR",
+        "Generar versiones imprimibles"
+      ],
+      "requerimientos": [
+        "Guion pedagógico validado",
+        "Estudio gráfico y audiovisual operativo",
+        "Tiempo de producción definido (2 semanas por módulo)",
+        "Checklist de entregables por módulo"
+      ]
+    },
+    {
+      "fase": "4. Capacitación de docentes",
+      "acciones": [
+        "Invitación por zonas escolares",
+        "Webinar inicial de bienvenida (en vivo)",
+        "Curso asincrónico en Aprende Jalisco (5 módulos)",
+        "Sesión sincrónica por zona para dudas y prácticas"
+      ],
+      "requerimientos": [
+        "Micrositio listo en Aprende Jalisco",
+        "Grabaciones de calidad listas antes de convocatoria",
+        "Moderador y técnico asignado para cada sesión",
+        "Plantilla de asistencia y rúbrica de participación"
+      ]
+    },
+    {
+      "fase": "5. Activación en el aula con estudiantes",
+      "acciones": [
+        "Entrega simbólica de credenciales de Explorador Junior",
+        "Primera clase con narrativa (agencia espacial, misión)",
+        "Implementación de las 5 sesiones con retos",
+        "Desafío final con presentación de prototipos"
+      ],
+      "requerimientos": [
+        "Materiales descargables listos por escuela",
+        "Soporte técnico disponible por WhatsApp o chat",
+        "Formato de seguimiento a retos",
+        "Plantilla de validación del docente"
+      ]
+    },
+    {
+      "fase": "6. Seguimiento y evidencias",
+      "acciones": [
+        "Recepción de fotos y videos de implementación",
+        "Formulario de evaluación del reto final",
+        "Carga de datos en dashboard",
+        "Retroalimentación por insignias"
+      ],
+      "requerimientos": [
+        "Canal de recepción (correo o Drive compartido)",
+        "Formulario con campos estructurados",
+        "Sistema de insignias automatizado (opcional con IA)",
+        "Informe mensual de avance por zona"
+      ]
+    },
+    {
+      "fase": "7. Comunidad, retroalimentación y escalamiento",
+      "acciones": [
+        "Creación de comunidad virtual (WhatsApp, Classroom)",
+        "Webinar mensual de inspiración",
+        "Encuestas de mejora continua",
+        "Convocatoria para embajadores de robótica"
+      ],
+      "requerimientos": [
+        "Moderador/a del grupo virtual",
+        "Calendario mensual de eventos",
+        "Dashboard de participación",
+        "Plantilla de postulación a embajadores"
+      ]
+    }
+  ],
+  "trayectos_formativos": {
+    "nombre": "Trayecto de Robótica M-Bot",
+    "modalidad": "Combinada (asincrónica + sincrónica + presencial opcional)",
+    "estructura": [
+      {
+        "modulo": 1,
+        "nombre": "¿Qué hay en la caja?",
+        "contenido": "Exploración física del kit M-Bot, funciones generales, cuidado de los componentes"
+      },
+      {
+        "modulo": 2,
+        "nombre": "Componentes básicos",
+        "contenido": "Motores, ruedas, placa base, LED, conexión de cables"
+      },
+      {
+        "modulo": 3,
+        "nombre": "Sensores",
+        "contenido": "Ultrasónico, seguidor de línea, luz, su funcionamiento y lógica"
+      },
+      {
+        "modulo": 4,
+        "nombre": "Primeros movimientos",
+        "contenido": "Programación por bloques, acciones básicas de movimiento y control"
+      },
+      {
+        "modulo": 5,
+        "nombre": "Misión y reto final",
+        "contenido": "Diseño de solución a problema, trabajo en equipo, presentación del reto"
+      }
+    ]
+  }
+}
