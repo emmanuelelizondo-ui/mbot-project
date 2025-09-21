@@ -2,600 +2,232 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Implementación de Robótica Educativa con M‑Bot</title>
+  <!--
+    Hoja de estilos mínima para recrear la estética del prototipo.
+    Se evita depender de frameworks externos para garantizar que funcione
+    en GitHub Pages sin configuraciones adicionales. Los colores y tamaños
+    están inspirados en la maqueta compartida por el usuario.
+  -->
   <style>
-    /* Base styling */
+    :root {
+      --bg: #f9fafb;
+      --fg: #1f2937;
+      --card-bg: #ffffff;
+      --primary: #000000;
+      --primary-light: #e5e7eb;
+      --secondary: #374151;
+      --accent: #007bff;
+      --chip-bg: #f3f4f6;
+    }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #333;
+      background: var(--bg);
+      color: var(--fg);
     }
     header {
-      background: #2E3A46;
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
+      text-align: left;
+      padding: 1.5rem 1rem 1rem;
     }
     header h1 {
       margin: 0;
-      font-size: 1.8rem;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    header p {
+      margin: 0.25rem 0 1rem;
+      font-size: 0.875rem;
+      color: var(--secondary);
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .chip {
+      background: var(--chip-bg);
+      border-radius: 999px;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.75rem;
+      color: var(--secondary);
+      white-space: nowrap;
     }
     nav {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      background: #e9ecef;
-      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
     }
     nav button {
-      background: #dee2e6;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--fg);
+      font-size: 0.85rem;
       cursor: pointer;
-      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s;
     }
     nav button.active {
-      background: #007bff;
+      background: var(--primary);
       color: #fff;
     }
     main {
-      padding: 1rem;
+      padding: 0 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    section {
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    .content-section {
+      display: none;
     }
-    section h2 {
+    .content-section.active {
+      display: block;
+    }
+    .section {
+      background: var(--card-bg);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .section h2 {
       margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-size: 1.25rem;
+    }
+    /* Details toggles for Fases */
+    details {
+      background: var(--card-bg);
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       margin-bottom: 0.5rem;
-      color: #2E3A46;
     }
-    section h3 {
-      margin: 1rem 0 0.5rem;
-      color: #485563;
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
     }
-    /* Task row styling */
-    .task {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.5rem;
-      border-bottom: 1px solid #eee;
-      padding: 0.5rem 0;
+    summary::marker {
+      display: none;
     }
-    .task-title {
-      flex: 1 1 200px;
+    details[open] summary {
+      margin-bottom: 0.5rem;
+    }
+    /* Checklist table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table th, table td {
+      border: 1px solid #e5e7eb;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+    table th {
+      background: #f8f9fa;
       font-weight: 600;
     }
-    .tags {
-      display: flex;
-      gap: 0.25rem;
-      flex-wrap: wrap;
-    }
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 0.75rem;
-    }
-    .tag .remove {
-      margin-left: 0.25rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .add-resp {
-      display: flex;
-      gap: 0.25rem;
-      align-items: center;
-    }
-    .add-resp input[type="text"] {
-      width: 140px;
-      padding: 0.25rem;
-      font-size: 0.8rem;
-    }
-    .add-resp input[type="color"] {
-      padding: 0;
-      border: none;
-      width: 32px;
-      height: 32px;
-    }
-    .add-resp button {
-      background: #28a745;
-      color: #fff;
-      border: none;
-      padding: 0.3rem 0.6rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-    select, input[type="date"] {
-      padding: 0.25rem;
-      font-size: 0.8rem;
-    }
-    /* Checklist table */
-    table.checklist {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    table.checklist th, table.checklist td {
-      border: 1px solid #ddd;
-      padding: 0.5rem;
-      text-align: left;
-      font-size: 0.85rem;
-    }
-    table.checklist th {
-      background: #e9ecef;
-    }
-    /* Calendar styling */
-    table.calendar {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    table.calendar th, table.calendar td {
-      border: 1px solid #ddd;
+    /* Calendar table styling */
+    .calendar th, .calendar td {
+      border: 1px solid #e5e7eb;
       width: 14.28%;
-      height: 90px;
+      height: 80px;
       vertical-align: top;
-      padding: 0.3rem;
+      padding: 0.25rem;
       font-size: 0.75rem;
-      position: relative;
     }
-    table.calendar th {
-      background: #f0f0f0;
+    .calendar th {
+      background: #f8f9fa;
       text-align: center;
     }
     .day-number {
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 0.25rem;
     }
     .task-entry {
       display: block;
+      font-size: 0.65rem;
       border-radius: 4px;
       padding: 2px 4px;
       margin: 1px 0;
-      font-size: 0.65rem;
       color: #fff;
     }
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-      }
-      .task {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .task-title {
-        flex-basis: auto;
-      }
+    /* Input styling */
+    input[type="text"], input[type="date"], select {
+      padding: 0.35rem 0.5rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.4rem;
+      font-size: 0.8rem;
+    }
+    input[type="color"] {
+      border: none;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+    }
+    .filter-input {
+      margin: 0 0 0.75rem;
+      width: 100%;
+    }
+    .responsables {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+    .responsable-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      border-radius: 4px;
+      padding: 0 4px;
+      font-size: 0.7rem;
+      color: #fff;
+    }
+    .responsable-tag .remove {
+      cursor: pointer;
+      margin-left: 2px;
+    }
+    /* Búsqueda rápida */
+    .quick-search {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+    }
+    .quick-search li {
+      margin-bottom: 0.25rem;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Implementación de Robótica Educativa con M‑Bot</h1>
+    <p id="version">Versión</p>
+    <div id="tag-container" class="chips"></div>
+    <nav>
+      <button data-view="resumen" class="active">Resumen</button>
+      <button data-view="fases">Fases</button>
+      <button data-view="equipo">Equipo</button>
+      <button data-view="trayecto">Trayecto formativo</button>
+      <button data-view="diagrama">Diagrama</button>
+      <button data-view="calendario">Calendario</button>
+      <button data-view="checklist">Checklist</button>
+    </nav>
   </header>
-  <nav>
-    <button data-view="fases" class="active">Fases</button>
-    <button data-view="equipo">Equipo</button>
-    <button data-view="trayecto">Trayecto</button>
-    <button data-view="checklist">Checklist</button>
-    <button data-view="calendar">Calendario</button>
-  </nav>
-  <main id="content">
-    <p>Cargando...</p>
+  <main>
+    <section id="view-resumen" class="content-section active"></section>
+    <section id="view-fases" class="content-section"></section>
+    <section id="view-equipo" class="content-section"></section>
+    <section id="view-trayecto" class="content-section"></section>
+    <section id="view-diagrama" class="content-section"></section>
+    <section id="view-calendario" class="content-section"></section>
+    <section id="view-checklist" class="content-section"></section>
   </main>
-  <script>
-    // Global state persisted in localStorage under 'mbotAppState'
-    let state = JSON.parse(localStorage.getItem('mbotAppState') || '{}');
-    let projectData;
-
-    // Initialize navigation and load data
-    function initNav() {
-      const buttons = document.querySelectorAll('nav button');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          buttons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          showView(btn.getAttribute('data-view'));
-        });
-      });
-    }
-
-    function saveState() {
-      localStorage.setItem('mbotAppState', JSON.stringify(state));
-    }
-
-    function getTask(id) {
-      if (!state.tasks) state.tasks = {};
-      if (!state.tasks[id]) {
-        state.tasks[id] = { responsables: [], startDate: '', endDate: '', status: 'Por hacer' };
-      }
-      return state.tasks[id];
-    }
-
-    function updateTask(id, field, value) {
-      const task = getTask(id);
-      task[field] = value;
-      saveState();
-    }
-
-    function addResponsible(id, name, color) {
-      const task = getTask(id);
-      task.responsables.push({ name: name, color: color });
-      saveState();
-    }
-
-    function removeResponsible(id, index) {
-      const task = getTask(id);
-      if (index >= 0 && index < task.responsables.length) {
-        task.responsables.splice(index, 1);
-        saveState();
-      }
-    }
-
-    async function loadData() {
-      try {
-        const response = await fetch('mbot_project.json');
-        projectData = await response.json();
-        initNav();
-        showView('fases');
-      } catch (e) {
-        document.getElementById('content').innerHTML = '<p>Error al cargar datos.</p>';
-        console.error(e);
-      }
-    }
-
-    function showView(view) {
-      switch (view) {
-        case 'fases':
-          renderFases();
-          break;
-        case 'equipo':
-          renderEquipo();
-          break;
-        case 'trayecto':
-          renderTrayecto();
-          break;
-        case 'checklist':
-          renderChecklist();
-          break;
-        case 'calendar':
-          renderCalendar();
-          break;
-      }
-    }
-
-    function renderFases() {
-      const container = document.getElementById('content');
-      container.innerHTML = '';
-      projectData.fases_implementacion.forEach((faseObj, fIdx) => {
-        const sec = document.createElement('section');
-        const h2 = document.createElement('h2');
-        h2.textContent = faseObj.fase;
-        sec.appendChild(h2);
-        // Acciones
-        faseObj.acciones.forEach((accion, aIdx) => {
-          const row = document.createElement('div');
-          row.className = 'task';
-          const title = document.createElement('span');
-          title.className = 'task-title';
-          title.textContent = accion;
-          row.appendChild(title);
-          const taskId = `fase${fIdx}-accion${aIdx}`;
-          const tData = getTask(taskId);
-          // Tags
-          const tagsDiv = document.createElement('div');
-          tagsDiv.className = 'tags';
-          tData.responsables.forEach((resp, rIdx) => {
-            const tag = document.createElement('span');
-            tag.className = 'tag';
-            tag.style.backgroundColor = resp.color;
-            tag.textContent = resp.name;
-            const rem = document.createElement('span');
-            rem.className = 'remove';
-            rem.textContent = '\u00D7';
-            rem.addEventListener('click', () => {
-              removeResponsible(taskId, rIdx);
-              renderFases();
-            });
-            tag.appendChild(rem);
-            tagsDiv.appendChild(tag);
-          });
-          row.appendChild(tagsDiv);
-          // Add responsible
-          const addDiv = document.createElement('div');
-          addDiv.className = 'add-resp';
-          const inp = document.createElement('input');
-          inp.type = 'text';
-          inp.placeholder = 'Responsable';
-          const color = document.createElement('input');
-          color.type = 'color';
-          // generate a default random color
-          color.value = '#'+Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-          const addBtn = document.createElement('button');
-          addBtn.textContent = '+';
-          addBtn.addEventListener('click', () => {
-            const name = inp.value.trim();
-            if (name) {
-              addResponsible(taskId, name, color.value);
-              inp.value = '';
-              // new random color for next addition
-              color.value = '#'+Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-              renderFases();
-            }
-          });
-          addDiv.appendChild(inp);
-          addDiv.appendChild(color);
-          addDiv.appendChild(addBtn);
-          row.appendChild(addDiv);
-          // Dates
-          const start = document.createElement('input');
-          start.type = 'date';
-          start.value = tData.startDate || '';
-          start.addEventListener('change', (e) => {
-            updateTask(taskId, 'startDate', e.target.value);
-            renderFases();
-          });
-          row.appendChild(start);
-          const end = document.createElement('input');
-          end.type = 'date';
-          end.value = tData.endDate || '';
-          end.addEventListener('change', (e) => {
-            updateTask(taskId, 'endDate', e.target.value);
-            renderFases();
-          });
-          row.appendChild(end);
-          // Status
-          const select = document.createElement('select');
-          ['Por hacer','En progreso','Completado'].forEach(optVal => {
-            const opt = document.createElement('option');
-            opt.value = optVal;
-            opt.textContent = optVal;
-            if (tData.status === optVal) opt.selected = true;
-            select.appendChild(opt);
-          });
-          select.addEventListener('change', (e) => {
-            updateTask(taskId, 'status', e.target.value);
-            renderFases();
-          });
-          row.appendChild(select);
-          // Apply background based on date/status
-          const todayStr = new Date().toISOString().split('T')[0];
-          if (tData.status !== 'Completado' && tData.startDate && tData.endDate) {
-            if (todayStr >= tData.startDate && todayStr <= tData.endDate) {
-              row.style.backgroundColor = '#fff9e6';
-            } else if (todayStr > tData.endDate) {
-              row.style.backgroundColor = '#ffe6e6';
-            }
-          }
-          sec.appendChild(row);
-        });
-        // Requerimientos section
-        const reqTitle = document.createElement('h3');
-        reqTitle.textContent = 'Requerimientos';
-        sec.appendChild(reqTitle);
-        const ul = document.createElement('ul');
-        faseObj.requerimientos.forEach(req => {
-          const li = document.createElement('li');
-          li.textContent = req;
-          ul.appendChild(li);
-        });
-        sec.appendChild(ul);
-        container.appendChild(sec);
-      });
-    }
-
-    function renderEquipo() {
-      const container = document.getElementById('content');
-      container.innerHTML = '';
-      const sec = document.createElement('section');
-      const h2 = document.createElement('h2');
-      h2.textContent = 'Equipo Operativo';
-      sec.appendChild(h2);
-      projectData.estructura_general = projectData.estructura_general || {};
-      // equipo data resides in estructura_general.equipo_operativo.roles_clave? Actually from JSON: projectData.estructura_general.equipo_operativo.roles_clave
-      const roles = projectData.estructura_general.equipo_operativo?.roles_clave || [];
-      const ul = document.createElement('ul');
-      roles.forEach(role => {
-        const li = document.createElement('li');
-        const strong = document.createElement('strong');
-        strong.textContent = role.nombre;
-        li.appendChild(strong);
-        const subUl = document.createElement('ul');
-        role.responsabilidades.forEach(resp => {
-          const subLi = document.createElement('li');
-          subLi.textContent = resp;
-          subUl.appendChild(subLi);
-        });
-        li.appendChild(subUl);
-        ul.appendChild(li);
-      });
-      sec.appendChild(ul);
-      container.appendChild(sec);
-    }
-
-    function renderTrayecto() {
-      const container = document.getElementById('content');
-      container.innerHTML = '';
-      const sec = document.createElement('section');
-      const h2 = document.createElement('h2');
-      h2.textContent = 'Trayecto Formativo';
-      sec.appendChild(h2);
-      const pName = document.createElement('p');
-      pName.innerHTML = '<strong>Nombre:</strong> ' + projectData.trayectos_formativos.nombre;
-      sec.appendChild(pName);
-      const pModalidad = document.createElement('p');
-      pModalidad.innerHTML = '<strong>Modalidad:</strong> ' + projectData.trayectos_formativos.modalidad;
-      sec.appendChild(pModalidad);
-      const estructura = projectData.trayectos_formativos.estructura;
-      const ul = document.createElement('ul');
-      estructura.forEach(mod => {
-        const li = document.createElement('li');
-        const strong = document.createElement('strong');
-        strong.textContent = 'Módulo ' + mod.modulo + ': ' + mod.nombre;
-        li.appendChild(strong);
-        const span = document.createElement('span');
-        span.textContent = ' — ' + mod.contenido;
-        li.appendChild(span);
-        ul.appendChild(li);
-      });
-      sec.appendChild(ul);
-      container.appendChild(sec);
-    }
-
-    function renderChecklist() {
-      const container = document.getElementById('content');
-      container.innerHTML = '';
-      const table = document.createElement('table');
-      table.className = 'checklist';
-      const thead = document.createElement('thead');
-      const trh = document.createElement('tr');
-      ['Fase','Acción','Responsables','Inicio','Fin','Estado'].forEach(text => {
-        const th = document.createElement('th');
-        th.textContent = text;
-        trh.appendChild(th);
-      });
-      thead.appendChild(trh);
-      table.appendChild(thead);
-      const tbody = document.createElement('tbody');
-      projectData.fases_implementacion.forEach((fase, i) => {
-        fase.acciones.forEach((accion, j) => {
-          const id = `fase${i}-accion${j}`;
-          const tData = getTask(id);
-          const row = document.createElement('tr');
-          // Determine row color for overdue or in-progress
-          const today = new Date().toISOString().split('T')[0];
-          let bg = '';
-          if (tData.status !== 'Completado' && tData.startDate && tData.endDate) {
-            if (today >= tData.startDate && today <= tData.endDate) {
-              bg = '#fff9e6';
-            } else if (today > tData.endDate) {
-              bg = '#ffe6e6';
-            }
-          }
-          if (bg) row.style.backgroundColor = bg;
-          // Fase name
-          const tdFase = document.createElement('td');
-          tdFase.textContent = fase.fase;
-          row.appendChild(tdFase);
-          const tdAcc = document.createElement('td');
-          tdAcc.textContent = accion;
-          row.appendChild(tdAcc);
-          const tdResp = document.createElement('td');
-          if (tData.responsables.length) {
-            tData.responsables.forEach((resp, idx) => {
-              const span = document.createElement('span');
-              span.style.backgroundColor = resp.color;
-              span.style.color = '#fff';
-              span.style.padding = '2px 4px';
-              span.style.borderRadius = '4px';
-              span.style.marginRight = '2px';
-              span.textContent = resp.name;
-              tdResp.appendChild(span);
-            });
-          }
-          row.appendChild(tdResp);
-          const tdStart = document.createElement('td');
-          tdStart.textContent = tData.startDate || '';
-          row.appendChild(tdStart);
-          const tdEnd = document.createElement('td');
-          tdEnd.textContent = tData.endDate || '';
-          row.appendChild(tdEnd);
-          const tdStatus = document.createElement('td');
-          tdStatus.textContent = tData.status;
-          row.appendChild(tdStatus);
-          tbody.appendChild(row);
-        });
-      });
-      table.appendChild(tbody);
-      container.appendChild(table);
-    }
-
-    function renderCalendar() {
-      const container = document.getElementById('content');
-      container.innerHTML = '';
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth();
-      // build tasks per day
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const firstDay = new Date(year, month, 1).getDay(); // 0=Sunday
-      // Map day number to list of tasks
-      const tasksByDay = {};
-      projectData.fases_implementacion.forEach((fase, i) => {
-        fase.acciones.forEach((accion, j) => {
-          const id = `fase${i}-accion${j}`;
-          const tData = getTask(id);
-          if (tData.startDate && tData.endDate) {
-            const startDate = new Date(tData.startDate);
-            const endDate = new Date(tData.endDate);
-            // only include tasks for current month
-            for (let d = 1; d <= daysInMonth; d++) {
-              const current = new Date(year, month, d);
-              if (current >= startDate && current <= endDate) {
-                if (!tasksByDay[d]) tasksByDay[d] = [];
-                // choose color
-                let color = '#6c757d';
-                if (tData.responsables.length) color = tData.responsables[0].color;
-                tasksByDay[d].push({ fase: fase.fase, accion: accion, color: color, status: tData.status });
-              }
-            }
-          }
-        });
-      });
-      const table = document.createElement('table');
-      table.className = 'calendar';
-      const thead = document.createElement('thead');
-      const thr = document.createElement('tr');
-      ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].forEach(dow => {
-        const th = document.createElement('th');
-        th.textContent = dow;
-        thr.appendChild(th);
-      });
-      thead.appendChild(thr);
-      table.appendChild(thead);
-      const tbody = document.createElement('tbody');
-      let dayCounter = 1 - firstDay;
-      for (let row = 0; row < 6; row++) {
-        const tr = document.createElement('tr');
-        for (let col = 0; col < 7; col++) {
-          const td = document.createElement('td');
-          if (dayCounter > 0 && dayCounter <= daysInMonth) {
-            const dayNum = dayCounter;
-            const dayDiv = document.createElement('div');
-            dayDiv.className = 'day-number';
-            dayDiv.textContent = dayNum;
-            td.appendChild(dayDiv);
-            const tasks = tasksByDay[dayNum] || [];
-            tasks.forEach(t => {
-              const bar = document.createElement('span');
-              bar.className = 'task-entry';
-              bar.style.backgroundColor = t.color;
-              bar.textContent = t.accion;
-              td.appendChild(bar);
-            });
-          }
-          dayCounter++;
-          tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-      }
-      table.appendChild(tbody);
-      container.appendChild(table);
-    }
-
-    // Start loading data when DOM is ready
-    document.addEventListener('DOMContentLoaded', loadData);
-  </script>
+  <!-- Incluimos el script principal -->
+  <scrpt type="module" src="./new_app.js"></script>
 </body>
 </html>
-Reemplazo de index.html con versión interactiva desde index (5).html
