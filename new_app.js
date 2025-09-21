@@ -1,6 +1,11 @@
 // Cargamos estado de localStorage o inicializamos
-const state = JSON.parse(localStorage.getItem('mbotAppState') || '{}');
-let data;
+let state;
+try {
+  const savedState = localStorage.getItem('mbotAppState');
+  state = savedState ? JSON.parse(savedState) : {};
+} catch {
+  state = {};
+}
 // Inicialización principal
 async function init() {
     // Carga de datos
